@@ -1,0 +1,296 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #ffffff;
+  --text: #202124;
+  --muted: #70757a;
+  --border: #dadce0;
+  --soft: #f8f9fa;
+  --blue: #4285f4;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  transition: background .2s, color .2s;
+}
+
+body.dark {
+  --bg: #171717;
+  --text: #f1f3f4;
+  --muted: #aeb4bb;
+  --border: #383838;
+  --soft: #222222;
+  --blue: #8ab4f8;
+}
+
+button, input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.header {
+  height: 65px;
+  padding: 0 7%;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  text-decoration: none;
+  color: var(--blue);
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.logo span {
+  color: var(--text);
+}
+
+.theme-btn {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--border);
+  background: var(--soft);
+  color: var(--text);
+  border-radius: 50%;
+}
+
+.container {
+  width: 100%;
+  max-width: 680px;
+  margin: 65px auto;
+  padding: 0 22px;
+  flex: 1;
+}
+
+.hero {
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+.hero-icon {
+  font-size: 42px;
+  margin-bottom: 18px;
+}
+
+.hero h1 {
+  font-size: clamp(29px, 6vw, 40px);
+  letter-spacing: -1.2px;
+  line-height: 1.2;
+}
+
+.hero h1 span {
+  color: var(--blue);
+}
+
+.hero p {
+  margin-top: 14px;
+  color: var(--muted);
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  padding: 5px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--soft);
+  margin-bottom: 22px;
+}
+
+.tab {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  padding: 13px 5px;
+  border-radius: 10px;
+  font-size: 13px;
+}
+
+.tab.active {
+  background: var(--bg);
+  color: var(--blue);
+  box-shadow: 0 1px 4px #00000012;
+  font-weight: bold;
+}
+
+.panel {
+  display: none;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 25px 20px;
+}
+
+.panel.active {
+  display: block;
+}
+
+.panel h2,
+.history h2 {
+  font-size: 18px;
+}
+
+.panel > p {
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 9px;
+  line-height: 1.6;
+}
+
+.download-form {
+  display: flex;
+  gap: 8px;
+  margin-top: 22px;
+}
+
+.download-form input {
+  min-width: 0;
+  flex: 1;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 12px;
+  background: var(--bg);
+  color: var(--text);
+  outline: none;
+  font-size: 13px;
+}
+
+.download-form input:focus {
+  border-color: var(--blue);
+}
+
+.download-form button {
+  border: none;
+  border-radius: 10px;
+  background: var(--blue);
+  color: white;
+  padding: 0 16px;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.download-form button:hover {
+  opacity: .9;
+}
+
+.supported {
+  margin-top: 18px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.8;
+}
+
+.notice {
+  background: var(--soft);
+  padding: 12px;
+  border-radius: 10px;
+  margin-top: 16px !important;
+}
+
+.status {
+  display: none;
+  overflow-wrap: anywhere;
+  margin-top: 16px;
+  padding: 12px;
+  border-radius: 10px;
+  background: var(--soft);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.status.show {
+  display: block;
+}
+
+.history {
+  margin-top: 35px;
+}
+
+.history-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.history-heading button {
+  border: none;
+  background: none;
+  color: var(--blue);
+  font-size: 12px;
+}
+
+.history-item {
+  padding: 13px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+  line-height: 1.5;
+}
+
+.history-item small {
+  display: block;
+  color: var(--muted);
+  margin-top: 5px;
+}
+
+.empty {
+  font-size: 13px;
+  color: var(--muted);
+  padding: 12px 0;
+}
+
+footer {
+  text-align: center;
+  padding: 22px;
+  background: var(--soft);
+  color: var(--muted);
+  font-size: 11px;
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding: 0 20px;
+  }
+
+  .container {
+    margin: 45px auto;
+  }
+
+  .tabs {
+    gap: 4px;
+  }
+
+  .tab {
+    font-size: 11px;
+  }
+
+  .download-form {
+    flex-direction: column;
+  }
+
+  .download-form input {
+    width: 100%;
+  }
+
+  .download-form button {
+    padding: 14px;
+  }
+}
