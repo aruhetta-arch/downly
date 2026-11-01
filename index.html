@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#ffffff">
+
+  <title>Downly — File Downloader</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="header">
+    <a href="#" class="logo">Down<span>ly</span></a>
+    <button id="themeBtn" class="theme-btn" aria-label="Ganti tema">☾</button>
+  </header>
+
+  <main class="container">
+
+    <div class="hero">
+      <div class="hero-icon">📥</div>
+      <h1>Download jadi <span>lebih mudah.</span></h1>
+      <p>Tempat sederhana untuk mengunduh file favoritmu.</p>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="file">📁 File Downloader</button>
+      <button class="tab" data-tab="youtube">🎬 YouTube</button>
+    </div>
+
+    <section class="panel active" id="file">
+      <h2>Download file</h2>
+      <p>Masukkan link langsung menuju file.</p>
+
+      <form id="fileForm" class="download-form">
+        <input
+          type="url"
+          id="fileUrl"
+          placeholder="https://example.com/file.pdf"
+          required
+        >
+        <button type="submit">Download</button>
+      </form>
+
+      <div id="fileStatus" class="status" aria-live="polite"></div>
+
+      <div class="supported">
+        PDF · ZIP · MP3 · JPG · PNG · dan lainnya
+      </div>
+    </section>
+
+    <section class="panel" id="youtube">
+      <h2>YouTube</h2>
+      <p>Masukkan link untuk memeriksa informasi video.</p>
+
+      <form id="youtubeForm" class="download-form">
+        <input
+          type="url"
+          id="youtubeUrl"
+          placeholder="https://youtube.com/watch?v=..."
+          required
+        >
+        <button type="submit">Periksa</button>
+      </form>
+
+      <div id="youtubeStatus" class="status" aria-live="polite"></div>
+
+      <p class="notice">
+        Pengunduhan hanya tersedia melalui sumber atau fitur
+        yang mengizinkan konten tersebut diunduh.
+      </p>
+    </section>
+
+    <section class="history">
+      <div class="history-heading">
+        <h2>Aktivitas terbaru</h2>
+        <button id="clearHistory">Hapus</button>
+      </div>
+
+      <div id="historyList">
+        <p class="empty">Belum ada aktivitas.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    Downly © 2026 · Simple downloader
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
