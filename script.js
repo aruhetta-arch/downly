@@ -1,3 +1,4 @@
+
 const tabs = document.querySelectorAll(".tab");
 const panels = document.querySelectorAll(".panel");
 
@@ -42,7 +43,6 @@ let history = [];
 
 try {
   history = JSON.parse(localStorage.getItem("downlyHistory") || "[]");
-
   if (!Array.isArray(history)) history = [];
 } catch {
   history = [];
@@ -114,24 +114,115 @@ function getValidUrl(value) {
   }
 }
 
+// Format ukuran file
+function formatSize(bytes) {
+  if (!Number.isFinite(bytes) || bytes < 0) {
+    return "Tidak diketahui";
+  }
+
+  if (bytes === 0) return "0 Bytes";
+
+  const units = ["Bytes", "KB", "MB", "GB", "TB"];
+  const index = Math.floor(Math.log(bytes) / Math.log(1024));
+  const size = bytes / Math.pow(1024, index);
+
+  return size.toFixed(2) + " " + units[index];
+}
+
+// Ambil nama file
+function getFileName(url, disposition) {
+  if (disposition) {
+    const encoded = disposition.match(/filename\*=UTF-8''([^;]+)/i);
+
+    if (encoded) {
+      try {
+        return decodeURIComponent(encoded[1].replace(/["']/g, ""));
+      } catch {}
+    }
+
+    const normal = disposition.match(/filename="?([^";]+)"?/i);
+
+    if (normal) return normal[1];
+  }
+
+  const name = url.pathname.split("/").pop();
+
+  if (!name) return "Tidak diketahui";
+
+  try {
+    return decodeURIComponent(name);
+  } catch {
+    return name;
+  }
+}
+
+// File Inspector
+async function inspectFile(url) {
+  showStatus(fileStatus, "Sedang memeriksa informasi file...");
+
+  try {
+    const response = await fetch(url.href, {
+      method: "HEAD",
+      redirect: "follow"
+    });
+
+    if (!response.ok) {
+      showStatus(
+        fileStatus,
+        "Server merespons dengan status " + response.status +
+        ". Informasi file tidak bisa diperiksa."
+      );
+      return;
+    }
+
+    const type = response.headers.get("content-type") || "Tidak diketahui";
+    const size = response.headers.get("content-length");
+    const disposition = response.headers.get("content-disposition");
+
+    const name = getFileName(response.url || url.href, disposition);
+    const extension = name.includes(".")
+      ? name.split(".").pop().toUpperCase()
+      : "Tidak diketahui";
+
+    const sizeText = size
+      ? formatSize(Number(size))
+      : "Tidak diketahui";
+
+    showStatus(
+      fileStatus,
+      "FILE BERHASIL DIPERIKSA\n" +
+      "Nama: " + name + "\n" +
+      "Format: " + extension + "\n" +
+      "Tipe: " + type + "\n" +
+      "Ukuran: " + sizeText
+    );
+
+    saveHistory(url.href, "File diperiksa");
+
+  } catch (error) {
+    showStatus(
+      fileStatus,
+      "Gagal membaca metadata file. Kemungkinan server membatasi CORS " +
+      "atau tidak mendukung pemeriksaan HEAD. Backend diperlukan untuk " +
+      "pemeriksaan yang lebih andal."
+    );
+  }
+}
+
 // Form file
-fileForm.addEventListener("submit", event => {
+fileForm.addEventListener("submit", async event => {
   event.preventDefault();
 
-  const url = getValidUrl(document.getElementById("fileUrl").value);
+  const url = getValidUrl(
+    document.getElementById("fileUrl").value
+  );
 
   if (!url) {
     showStatus(fileStatus, "Masukkan URL yang valid.");
     return;
   }
 
-  showStatus(
-    fileStatus,
-    "URL valid! Downloader memerlukan backend untuk memeriksa " +
-    "file dan memproses unduhan dengan lebih andal."
-  );
-
-  saveHistory(url.href, "URL file diperiksa");
+  await inspectFile(url);
 });
 
 // Form YouTube
@@ -175,7 +266,7 @@ youtubeForm.addEventListener("submit", event => {
   showStatus(
     youtubeStatus,
     "Link video dikenali. Untuk informasi video dan opsi unduhan, " +
-    "kita perlu menghubungkan layanan atau backend yang sesuai."
+    "kita perlu menghubungkan layanan yang sesuai."
   );
 
   saveHistory(url.href, "Link YouTube diperiksa");
